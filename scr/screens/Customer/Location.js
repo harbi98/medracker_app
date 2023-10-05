@@ -1,44 +1,42 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, StatusBar } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { styles } from '../../public/Style'
 import Mapbox from '@rnmapbox/maps'
-import * as ExpoLocation from 'expo-location'
+import { AuthContext } from '../../context/AuthContext';
 
 Mapbox.setAccessToken('pk.eyJ1IjoicnVpbnplIiwiYSI6ImNrOTd0N3F2bjBpdjkzZnBha3FsZmk4NjcifQ.VprSZLmMu0zRldMobXT6Fg');
 
 export default function Location() {
-  const [location, setLocation] = useState(null);
-  const [longitude, setLongitude] = useState('125.56269613033322'); //7.053368928095796, 125.56269613033322
-  const [latitude, setLatitude] = useState('7.053368928095796');
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await ExpoLocation.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        return;
-      }
-
-      let location = await ExpoLocation.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+  const {location} = useContext(AuthContext);
+  const [currLocation, setCurrLocation] = useState(null);
 
   return (
     <View style={styles.container}>
       <Mapbox.MapView style={local_styles.map}>
+        <StatusBar
+          barStyle={'dark-content'}
+        />
+        <Mapbox.UserLocation
+          visible={true}
+          onUpdate={(newLocation) => setCurrLocation(newLocation)}
+        />
         <Mapbox.Camera
           zoomLevel={15}
-          centerCoordinate={[longitude, latitude]}
+          centerCoordinate={[JSON.stringify(location.coords.longitude), JSON.stringify(location.coords.latitude)]}
           animationMode="flyTo"
           animationDuration={2000}
         />
         <Mapbox.PointAnnotation
           id="userLocation"
-          coordinate={[longitude, latitude]}
+          coordinate={[JSON.stringify(location.coords.longitude), JSON.stringify(location.coords.latitude)]}
           title="Your Location"
         />
       </Mapbox.MapView>
-      {location ? <Text>{JSON.stringify(location)}</Text> : null}
+      {currLocation ?
+          <Text>{JSON.stringify(currLocation)}</Text>
+        :
+          null
+      }
     </View>
   )
 }
@@ -49,7 +47,7 @@ const local_styles = StyleSheet.create({
     width: 300,
   },
   map: {
-    flex: 1,
+    height: 500,
     width: '100%'
   }
 });

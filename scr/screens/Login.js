@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, SafeAreaView, Image, TouchableHighlight } from 'react-native'
+import { ScrollView, View, Text, SafeAreaView, Image, TouchableHighlight, StatusBar } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from '../public/Style'
 import { 
@@ -17,6 +17,9 @@ export default function Login({navigation}) {
     }
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar
+                barStyle={'dark-content'}
+            />
             <ScrollView style={{width: '100%'}}>
                 <View style={{alignItems: 'center', paddingBottom: 10}}>
                     <View style={styles.auth_page_logo}>
@@ -119,7 +122,7 @@ export default function Login({navigation}) {
                             }
                         </View>
                     </View>
-                    {/* <View style={styles.form_options_container}>
+                    <View style={styles.form_options_container}>
                         <View style={{width: '100%', marginBottom: 20}}>
                             <Button buttonStyle={styles.register_button} containerStyle={{padding: 5, width: '100%'}} type="solid" onPress={() => navigation.navigate('Register')}>
                                 <Icon type='antdesign' name="form" color="#198754" />
@@ -154,7 +157,7 @@ export default function Login({navigation}) {
                                 type="twitter"
                             />
                         </View>
-                    </View> */}
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>

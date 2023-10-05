@@ -1,9 +1,12 @@
 import React from 'react';
+import { AuthProvider } from './scr/context/AuthContext';
 import Navigation from './scr/components/Navigation';
 
 function App() {
   return (
-    <Navigation/>
+    <AuthProvider>
+      <Navigation/>
+    </AuthProvider>
   );
 }
 
