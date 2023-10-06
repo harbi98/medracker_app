@@ -129,34 +129,6 @@ export default function Login({navigation}) {
                                 <Text style={styles.register_button_title}>Sign Up</Text>
                             </Button>
                         </View>
-                        <View style={{flexDirection: 'row', width: '100%', alignItems: 'center'}}>
-                            <View style={{flex: 1, borderWidth: 1, height: 0, borderColor: '#198754'}}/>
-                            <Text style={{marginLeft: 10, marginRight: 10, color: '#198754'}}>OR</Text>
-                            <View style={{flex: 1, borderWidth: 1, height: 0, borderColor: '#198754'}}/>
-                        </View>
-                        <View style={{ flexDirection: 'row', width: '100%', marginTop: 20, marginBottom: 20, justifyContent: 'center'}}>
-                            <SocialIcon
-                                iconType="font-awesome"
-                                onPress={() => console.log("onPress()")}
-                                style={{ paddingHorizontal: 10 }}
-                                title="Google"
-                                type="google"
-                            />
-                            <SocialIcon
-                                iconType="font-awesome"
-                                onPress={() => console.log("onPress()")}
-                                style={{ paddingHorizontal: 10 }}
-                                title="Facebook"
-                                type="facebook"
-                            />
-                            <SocialIcon
-                                iconType="font-awesome"
-                                onPress={() => console.log("onPress()")}
-                                style={{ paddingHorizontal: 10 }}
-                                title="Twitter"
-                                type="twitter"
-                            />
-                        </View>
                     </View>
                 </View>
             </ScrollView>

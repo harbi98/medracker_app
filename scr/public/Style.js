@@ -132,12 +132,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingHorizontal: 10,
         marginBottom: 20,
-        marginTop: 10
+        marginTop: 10,
+        width: window_width
     },
     home_option_button: {
         height: (window_width / 4) - 25,
         width: (window_width / 4) - 25,
-        borderRadius: 40,
+        borderRadius: ((window_width / 4) - 25) / 2,
         backgroundColor: '#fff',
         marginBottom: 5,
         elevation: 5,

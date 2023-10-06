@@ -17,26 +17,26 @@ export default function Location() {
           barStyle={'dark-content'}
         />
         <Mapbox.UserLocation
+          showsUserHeadingIndicator={true}
           visible={true}
           onUpdate={(newLocation) => setCurrLocation(newLocation)}
         />
-        <Mapbox.Camera
-          zoomLevel={15}
-          centerCoordinate={[JSON.stringify(location.coords.longitude), JSON.stringify(location.coords.latitude)]}
-          animationMode="flyTo"
-          animationDuration={2000}
-        />
-        <Mapbox.PointAnnotation
+        {currLocation ?
+            <Mapbox.Camera
+              zoomLevel={15}
+              centerCoordinate={[JSON.stringify(currLocation.coords.longitude), JSON.stringify(currLocation.coords.latitude)]}
+              animationMode="flyTo"
+              animationDuration={2000}
+            />
+          :
+            null
+        }
+        {/* <Mapbox.PointAnnotation
           id="userLocation"
           coordinate={[JSON.stringify(location.coords.longitude), JSON.stringify(location.coords.latitude)]}
           title="Your Location"
-        />
+        /> */}
       </Mapbox.MapView>
-      {currLocation ?
-          <Text>{JSON.stringify(currLocation)}</Text>
-        :
-          null
-      }
     </View>
   )
 }
@@ -47,7 +47,7 @@ const local_styles = StyleSheet.create({
     width: 300,
   },
   map: {
-    height: 500,
+    flex: 1,
     width: '100%'
   }
 });

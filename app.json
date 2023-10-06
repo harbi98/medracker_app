@@ -22,16 +22,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.har_bi.medtracker",
-      "versionCode": "1"
+      "package": "com.mediaone.medtracker",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "5d7e5320-70f1-45b4-b9ad-960d791df830"
-      }
     },
     "plugins": [
       [
@@ -47,6 +46,11 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "25a60189-5e62-4f16-ba40-fd189a54e7e9"
+      }
+    }
   }
 }
