@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableHighlight, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native'
 import React from 'react'
 import { styles } from '../../public/Style'
 import { 
@@ -8,6 +8,10 @@ import {
 export default function Home({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'#ffffff'}
+      />
       <ScrollView contentContainerStyle={{flexGrow: 1, paddingBottom: 40}}>
         <View style={styles.tab_container}>
           <View style={styles.home_header}>
@@ -93,12 +97,10 @@ export default function Home({navigation}) {
                 <Icon type='materialicons' name="info-outline" size={30} color='#00BE62'/>
                 <Text style={styles.section_title_label}>Learn to use MedTracker</Text>
               </View>
-              <View style={{flexDirection: 'row', flex: 1}}>
-                  <View style={styles.section_cards_container}>
-                    <View style={styles.tutorial_card}>
+              <View style={styles.section_tutorial_container}>
+                <View style={styles.tutorial_card}>
 
-                    </View>
-                  </View>
+                </View>
               </View>
             </View>
             <View style={styles.home_section_long}>
@@ -107,8 +109,11 @@ export default function Home({navigation}) {
                 <Text style={styles.section_title_label}>Recent Transaction</Text>
               </View>
               <View style={{flexDirection: 'row', flex: 1}}>
-                <ScrollView horizontal={true}>
+                <ScrollView style={{flex: 1}} horizontal={true}>
                   <View style={styles.section_cards_container}>
+                    <View style={styles.recent_transaction_card}>
+
+                    </View>
                     <View style={styles.recent_transaction_card}>
 
                     </View>

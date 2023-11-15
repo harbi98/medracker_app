@@ -1,6 +1,7 @@
 import { ScrollView, View, Text, SafeAreaView, Image, StatusBar, TouchableHighlight } from 'react-native'
-import React, {useState} from 'react'
-import { styles } from '../public/Style'
+import React, {useState, useContext} from 'react'
+import { styles, window_width, window_height } from '../public/Style'
+import { AuthContext } from '../context/AuthContext'
 import { 
     Input,
     Button,
@@ -8,75 +9,77 @@ import {
 } from '@rneui/themed'
 
 export default function Register({navigation}) {
-    const [accType, setAccType] = useState('customer');
+    const { register } = useContext(AuthContext);
 
-    const handleSelectAccountType = (acc_type) => {
-        setAccType(acc_type);
-    }
+    const [firstName, setFirstName] = useState();
+    const [lastName, setLastName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState();
+    const [contactNumber, setContactNumber] = useState();
+    const [addess, setAddress] = useState();
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar
                 barStyle={'dark-content'}
+                backgroundColor={'#ffffff'}
             />
             <ScrollView style={{width: '100%'}}>
-                <View  style={{alignItems: 'center', paddingBottom: 10}}>
+                <View  style={{alignItems: 'center', paddingBottom: 10, marginTop: window_height * 0.05}}>
                     <View style={styles.auth_page_logo}>
                             
-                    </View>
-                    <View style={styles.choose_account_container}>
-                        <Text style={styles.account_selection_title}>Choose Account Type</Text>
-                        <View style={styles.account_selection_container}>
-                            <TouchableHighlight
-                                underlayColor='#d3d3d3'
-                                style={accType === 'customer' ? styles.account_type_card_active : styles.account_type_card}
-                                onPress={() => handleSelectAccountType('customer')}
-                            >
-                                <>
-                                    <Image style={styles.account_type_icon} source={require('../../assets/patient.png')}/>
-                                    <Text>Customer</Text>
-                                </>
-                            </TouchableHighlight>
-                            <TouchableHighlight
-                                underlayColor='#d3d3d3'
-                                style={accType === 'pharmacy' ? styles.account_type_card_active : styles.account_type_card}
-                                onPress={() => handleSelectAccountType('pharmacy')}
-                            >
-                                <>
-                                    <Image style={styles.account_type_icon} source={require('../../assets/drugstore.png')}/>
-                                    <Text>Pharmacy</Text>
-                                </>
-                            </TouchableHighlight>
-                        </View>
                     </View>
                     <View style={styles.form_container}>
                         <View style={styles.field_container}>
                             <View style={{flex: 1}}>
-                            <Input
-                                renderErrorMessage={false}
-                                placeholder='Full Name'
-                                leftIcon={
-                                    <Image
-                                        source={require('../../assets/user.png')}
-                                        style={styles.input_icon}
-                                    />
-                                }
-                                inputContainerStyle={styles.form_field}
-                            />
+                                <Input
+                                    renderErrorMessage={false}
+                                    placeholder='First Name'
+                                    value={firstName}
+                                    onChangeText={(e) => setFirstName(e)}
+                                    leftIcon={
+                                        <Image
+                                            source={require('../../assets/user.png')}
+                                            style={styles.input_icon}
+                                        />
+                                    }
+                                    inputContainerStyle={styles.form_field}
+                                />
                             </View>
                         </View>
                         <View style={styles.field_container}>
                             <View style={{flex: 1}}>
-                            <Input
-                                renderErrorMessage={false}
-                                placeholder='Email Address'
-                                leftIcon={
-                                    <Image
-                                        source={require('../../assets/envelope-outline.png')}
-                                        style={styles.input_icon}
-                                    />
-                                }
-                                inputContainerStyle={styles.form_field}
-                            />
+                                <Input
+                                    renderErrorMessage={false}
+                                    placeholder='Last Name'
+                                    value={lastName}
+                                    onChangeText={(e) => setLastName(e)}
+                                    leftIcon={
+                                        <Image
+                                            source={require('../../assets/user.png')}
+                                            style={styles.input_icon}
+                                        />
+                                    }
+                                    inputContainerStyle={styles.form_field}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.field_container}>
+                            <View style={{flex: 1}}>
+                                <Input
+                                    renderErrorMessage={false}
+                                    placeholder='Email Address'
+                                    value={email}
+                                    onChangeText={(e) => setEmail(e)}
+                                    leftIcon={
+                                        <Image
+                                            source={require('../../assets/envelope-outline.png')}
+                                            style={styles.input_icon}
+                                        />
+                                    }
+                                    inputContainerStyle={styles.form_field}
+                                />
                             </View>
                         </View>
                         <View style={styles.field_container}>
@@ -85,6 +88,8 @@ export default function Register({navigation}) {
                                 renderErrorMessage={false}
                                 placeholder='Password'
                                 secureTextEntry={true}
+                                value={password}
+                                onChangeText={(e) => setPassword(e)}
                                 leftIcon={
                                     <Image
                                         source={require('../../assets/lock.png')}
@@ -101,6 +106,42 @@ export default function Register({navigation}) {
                                 renderErrorMessage={false}
                                 placeholder='Confirm Password'
                                 secureTextEntry={true}
+                                value={confirmPassword}
+                                onChangeText={(e) => setConfirmPassword(e)}
+                                leftIcon={
+                                    <Image
+                                        source={require('../../assets/lock.png')}
+                                        style={styles.input_icon}
+                                    />
+                                }
+                                inputContainerStyle={styles.form_field}
+                            />
+                            </View>
+                        </View>
+                        <View style={styles.field_container}>
+                            <View style={{flex: 1}}>
+                            <Input
+                                renderErrorMessage={false}
+                                placeholder='Contact Number'
+                                value={contactNumber}
+                                onChangeText={(e) => setContactNumber(e)}
+                                leftIcon={
+                                    <Image
+                                        source={require('../../assets/hastag.png')}
+                                        style={styles.input_icon}
+                                    />
+                                }
+                                inputContainerStyle={styles.form_field}
+                            />
+                            </View>
+                        </View>
+                        <View style={styles.field_container}>
+                            <View style={{flex: 1}}>
+                            <Input
+                                renderErrorMessage={false}
+                                placeholder='Address'
+                                value={addess}
+                                onChangeText={(e) => setAddress(e)}
                                 leftIcon={
                                     <Image
                                         source={require('../../assets/lock.png')}
@@ -116,7 +157,7 @@ export default function Register({navigation}) {
                                 buttonStyle={styles.login_button}
                                 containerStyle={{padding: 5, width: '100%'}}
                                 type="solid"
-                                onPress={() => navigation.navigate('Login')}
+                                onPress={() => register(firstName, lastName, email, password, confirmPassword, contactNumber, addess)}
                             >
                                 <Icon type='antdesign' name="form" color="#FFFFFF" />
                                 <Text style={styles.login_button_title}>Sign Up</Text>

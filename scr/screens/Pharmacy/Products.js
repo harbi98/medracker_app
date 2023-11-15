@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, Touchable, TouchableHighlight, Image } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { styles } from '../../public/Style'
 import { 
     Input,
@@ -11,12 +11,16 @@ import {
     Overlay
 } from '@rneui/themed'
 import * as SQLite from 'expo-sqlite'
+import { BASE_URL, processResponse } from '../../config'
+import { AuthContext } from '../../context/AuthContext'
 import SelectDropdown from 'react-native-select-dropdown'
 import * as ImagePicker from 'expo-image-picker';
 
 const db = SQLite.openDatabase('main.db');
 
 export default function Products({navigation}) {
+    const { token, pharmacyId } = useContext(AuthContext);
+
     const [index, setIndex] = useState(0);
     const [addProductVisible, setAddProductVVisible] = useState(false);
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
@@ -38,35 +42,52 @@ export default function Products({navigation}) {
         setAddCategoryVisible(!addCategoryVisible);
     };
 
-    const addCategory = (category_name) => {
-        try {
-            db.transaction((txt) => {
-                txt.executeSql(
-                    "CREATE TABLE IF NOT EXISTS categories (category_id INTEGER PRIMARY KEY AUTOINCREMENT, category_name TEXT);"
-                );
-                txt.executeSql("INSERT INTO categories (category_name) VALUES (?)", [category_name]);
+    const addCategory = () => {
+        try{
+            fetch(BASE_URL+'add-category',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    name: categoryName,
+                })
             })
-            alert('Added Category Sucessfully!');
-            setCategoryName();
-            toggleAddCategory();
-            getCategories();
-        } catch(e) {
+            .then(processResponse)
+            .then(res => {
+                const { statusCode, data } = res;
+                alert(data.message);
+                getCategories();
+                toggleAddCategory();
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        } catch (e){
             console.log(e);
         }
     }
     const getCategories = () => {
-        try {
-            db.transaction((txt) => {
-                txt.executeSql("CREATE TABLE IF NOT EXISTS categories (category_id INTEGER PRIMARY KEY AUTOINCREMENT, category_name TEXT);");
-                txt.executeSql("SELECT * FROM categories", [], (_, {rows}) => {
-                    var len = rows.length;
-                    setCategories([]);
-                    for (let i = 0; i < len; i++) {
-                        setCategories(oldArray => [...oldArray, rows.item(i)])
-                    }
-                });
+        try{
+            fetch(BASE_URL+'categories',{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
             })
-        } catch(e) {
+            .then(processResponse)
+            .then(res => {
+                const { statusCode, data } = res;
+                setCategories(data.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        } catch (e){
             console.log(e);
         }
     }
@@ -81,36 +102,61 @@ export default function Products({navigation}) {
     
         setProductPhoto(result.assets[0].base64);
     };
-    const addProduct = (product_name, price, category_id, quantity) => {
-        try {
-            db.transaction((txt) => {
-                txt.executeSql(
-                    "CREATE TABLE IF NOT EXISTS products (product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_photo TEXT, product_name TEXT, price DECIMAL(20,2), category_id INTEGER, quantity INTEGER);"
-                );
-                txt.executeSql("INSERT INTO products (product_photo, product_name, price, category_id, quantity) VALUES (?,?,?,?,?)", [productPhoto, product_name, price, category_id, quantity]);
+    const addProduct = () => {
+        try{
+            fetch(BASE_URL+'add-product',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    user_id: pharmacyId,
+                    name: productName,
+                    details: 'test',
+                    price: productPrice,
+                    photo: 'test.jpg',
+                    category_id: categoryID,
+                    quantity: productQuantity,
+                })
             })
-            alert('Added Product Sucessfully!');
-            toggleAddProduct();
-            getProducts();
-        } catch(e) {
+            .then(processResponse)
+            .then(res => {
+                const { statusCode, data } = res;
+                alert(JSON.stringify(data.message));
+                toggleAddProduct();
+                setProductName();
+                setProductPrice();
+                setCategoryID();
+                setProductQuantity();
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        } catch (e){
             console.log(e);
         }
     }
     const getProducts = () => {
-        try {
-            db.transaction((txt) => {
-                txt.executeSql(
-                    "CREATE TABLE IF NOT EXISTS products (product_id INTEGER PRIMARY KEY AUTOINCREMENT, product_photo TEXT, product_name TEXT, price DECIMAL(20,2), category_id INTEGER, quantity INTEGER);"
-                );
-                txt.executeSql("SELECT * FROM products", [], (_, {rows}) => {
-                    var len = rows.length;
-                    setProducts([]);
-                    for (let i = 0; i < len; i++) {
-                        setProducts(oldArray => [...oldArray, rows.item(i)])
-                    }
-                });
+        try{
+            fetch(BASE_URL+'product-store/2',{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
             })
-        } catch(e) {
+            .then(processResponse)
+            .then(res => {
+                const { statusCode, data } = res;
+                setProducts(data.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        } catch (e){
             console.log(e);
         }
     }
@@ -184,10 +230,9 @@ export default function Products({navigation}) {
                                                 onPress={() => console.log('pressed')}
                                             >
                                                 <>
-                                                    <Image source={{ uri: 'data:image/jpg;base64,' + product.product_photo }} style={styles.product_photo}/>
+                                                    <Image source={{uri: product.photo}} style={styles.product_photo}/>
                                                     <View style={{flex: 1, padding: 10}}>
-                                                        <Text style={{fontSize: 18}}>{product.product_name}</Text>
-                                                        <Text style={{color: '#c3c3c3'}}>500mg</Text>
+                                                        <Text style={{fontSize: 18, marginBottom: 10}}>{product.name}</Text>
                                                         <Text style={{fontSize: 18}}>Price {product.price}</Text>
                                                         <Text style={{fontSize: 18}}>Stocks {product.quantity}</Text>
                                                     </View>
@@ -225,7 +270,7 @@ export default function Products({navigation}) {
                                                 style={styles.product_category_card}
                                                 onPress={() => console.log(category)}
                                             >
-                                                <Text>{category.category_name}</Text>
+                                                <Text>{category.name}</Text>
                                             </TouchableHighlight>
                                         )
                                     })}
@@ -309,18 +354,18 @@ export default function Products({navigation}) {
                             height: 40, borderRadius: 10
                         }}
                         onSelect={(selectedItem, index) => {
-                            console.log(selectedItem.category_id, selectedItem.category_name)
-                            setCategoryID(selectedItem.category_id);
+                            console.log(selectedItem.id, selectedItem.name)
+                            setCategoryID(selectedItem.id);
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {
                             // text represented after item is selected
                             // if data array is an array of objects then return selectedItem.property to render after item is selected
-                            return selectedItem.category_name
+                            return selectedItem.name
                         }}
                         rowTextForSelection={(item, index) => {
                             // text represented for each item in dropdown
                             // if data array is an array of objects then return item.property to represent item in dropdown
-                            return item.category_name
+                            return item.name
                         }}
                     />
                 </View>

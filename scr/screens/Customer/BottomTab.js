@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomeScreen from './Home'
 import MedicineScreen from './Medicine'
 import LocationScreen from './Location'
-import NotificationScreen from './Notification'
+import CartScreen from './Cart'
 import MenuScreen from './Menu'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -49,12 +49,14 @@ export default function BottomTab() {
         }}
       />
       <Tab.Screen
-        name="Notification"
-        component={NotificationScreen}
+        name="CartTab"
+        component={CartScreen}
         options={{
+          title: 'Cart',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="cart-outline" color={color} size={26} />
           ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen

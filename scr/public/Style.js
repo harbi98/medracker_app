@@ -1,5 +1,6 @@
 import { Platform, StatusBar, Dimensions, StyleSheet } from 'react-native';
-const window_width = Dimensions.get('window').width;
+export const window_width = Dimensions.get('window').width;
+export const window_height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     container: {
@@ -8,6 +9,16 @@ export const styles = StyleSheet.create({
         // paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight + 20 : 0,
         paddingTop: 0,
         backgroundColor: '#ffffff',
+        width: window_width
+    },
+    tabs_container: {
+        flex: 1,
+        alignItems: 'center',
+        // paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight + 20 : 0,
+        paddingTop: 0,
+        backgroundColor: '#ffffff',
+        width: window_width,
+        marginBottom: 50
     },
     tab_container: {
         flex: 1
@@ -45,6 +56,13 @@ export const styles = StyleSheet.create({
     form_field: {
         borderRadius: 10,
         width: '100%'
+    },
+    search_location_field: {
+        width: '100%',
+        height: 55,
+        backgroundColor: '#ffffff',
+        borderRadius: 5,
+        borderBottomWidth: 0,
     },
     input_icon: {
         width: 24,
@@ -115,7 +133,7 @@ export const styles = StyleSheet.create({
     },
     home_section: {
         width: '100%',
-        height: 200,
+        height: 250,
         marginBottom: 10,
     },
     home_section_long: {
@@ -163,16 +181,21 @@ export const styles = StyleSheet.create({
     },
     scroll_indicator: {
         height: '100%',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: 5
     },
     section_cards_container: {
         flex: 1,
         padding: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+    },
+    section_tutorial_container: {
+        flex: 1,
+        padding: 10,
     },
     medicine_card: {
-        height: '100%',
-        width: 125,
+        flex: 1,
+        width: 150,
         borderRadius: 10,
         marginRight: 10,
         elevation: 3,
@@ -180,7 +203,31 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#ffffff'
+    },
+    medicine_image: {
+        width: '100%',
+        height: '100%',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+    },
+    pharmacy_card: {
+        flex: 1,
+        width: 150,
+        borderRadius: 10,
+        marginRight: 10,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        backgroundColor: '#ffffff'
+    },
+    pharmacy_image: {
+        width: '100%',
+        height: '100%',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
     },
     last_medicine_card: {
         marginRight: 0,
@@ -278,5 +325,24 @@ export const styles = StyleSheet.create({
     account_type_icon: {
         width: '100%',
         height: '100%'
+    },
+    search_block: { 
+        position: 'absolute',
+        top: Platform.OS === 'ios' ? 60 : 5,
+        right: 5,
+        left: 5,
+        zIndex: 1
+    },
+    results_block: {
+        maxHeight: 200,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        backgroundColor: '#ffffff',
+        elevation: 5,
+        borderRadius: 5,
+        paddingLeft: 10,
+        paddingRight: 10
+
     }
 });

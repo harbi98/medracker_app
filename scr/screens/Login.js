@@ -1,6 +1,7 @@
 import { ScrollView, View, Text, SafeAreaView, Image, TouchableHighlight, StatusBar } from 'react-native'
-import React, { useState } from 'react'
-import { styles } from '../public/Style'
+import React, { useState, useContext } from 'react'
+import { styles, window_height, window_width } from '../public/Style'
+import { AuthContext } from '../context/AuthContext'
 import { 
     Input,
     CheckBox,
@@ -9,23 +10,23 @@ import {
 } from '@rneui/themed'
 
 export default function Login({navigation}) {
-    const [check1, setCheck1] = useState(false);
-    const [accType, setAccType] = useState('customer');
+    const { login } = useContext(AuthContext);
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [check, setCheck] = useState(false);
 
-    const handleSelectAccountType = (acc_type) => {
-        setAccType(acc_type);
-    }
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar
                 barStyle={'dark-content'}
+                backgroundColor={'#ffffff'}
             />
             <ScrollView style={{width: '100%'}}>
-                <View style={{alignItems: 'center', paddingBottom: 10}}>
+                <View style={{alignItems: 'center', paddingBottom: 10, marginTop: window_height * 0.05}}>
                     <View style={styles.auth_page_logo}>
                         
                     </View>
-                    <View style={styles.choose_account_container}>
+                    {/* <View style={styles.choose_account_container}>
                         <Text style={styles.account_selection_title}>Choose Account Type</Text>
                         <View style={styles.account_selection_container}>
                             <TouchableHighlight
@@ -49,13 +50,15 @@ export default function Login({navigation}) {
                                 </>
                             </TouchableHighlight>
                         </View>
-                    </View>
+                    </View> */}
                     <View style={styles.form_container}>
                         <View style={styles.field_container}>
                             <View style={{flex: 1}}>
                                 <Input
                                     renderErrorMessage={false}
                                     placeholder='Email Address'
+                                    value={email}
+                                    onChangeText={(e) => setEmail(e)}
                                     leftIcon={
                                         <Image
                                             source={require('../../assets/envelope-outline.png')}
@@ -71,6 +74,8 @@ export default function Login({navigation}) {
                             <Input
                                 renderErrorMessage={false}
                                 placeholder='Password'
+                                value={password}
+                                onChangeText={(e) => setPassword(e)}
                                 secureTextEntry={true}
                                 leftIcon={
                                     <Image
@@ -87,39 +92,22 @@ export default function Login({navigation}) {
                         </View>
                         <View style={styles.checkbox_container}>
                             <CheckBox
-                                checked={check1}
+                                checked={check}
                                 containerStyle={styles.checkbox}
-                                onPress={() => setCheck1(!check1)}
+                                onPress={() => setCheck(!check)}
                             />
-                            <Text onPress={() => setCheck1(!check1)}>Remember me</Text>
+                            <Text onPress={() => setCheck(!check)}>Remember me</Text>
                         </View>
                         <View style={styles.field_container}>
-                            {accType === 'customer' ?
-                                    <Button
-                                        buttonStyle={styles.login_button}
-                                        containerStyle={{padding: 5, width: '100%'}}
-                                        type="solid"
-                                        onPress={() => navigation.navigate('CustomerDashboard')}
-                                    >
-                                        <Icon type='antdesign' name="login" color="white" />
-                                        <Text style={styles.login_button_title}>Log In (Customer)</Text>
-                                    </Button>
-                                :
-                                    null
-                            }
-                            {accType === 'pharmacy' ?
-                                    <Button
-                                        buttonStyle={styles.login_button}
-                                        containerStyle={{padding: 5, width: '100%'}}
-                                        type="solid"
-                                        onPress={() => navigation.navigate('PharmacyDashboard')}
-                                    >
-                                        <Icon type='antdesign' name="login" color="white" />
-                                        <Text style={styles.login_button_title}>Log In (Pharmacy)</Text>
-                                    </Button>
-                                :
-                                    null
-                            }
+                        <Button
+                            buttonStyle={styles.login_button}
+                            containerStyle={{padding: 5, width: '100%'}}
+                            type="solid"
+                            onPress={() => login(email, password)}
+                        >
+                            <Icon type='antdesign' name="login" color="white" />
+                            <Text style={styles.login_button_title}>Log In</Text>
+                        </Button>
                         </View>
                     </View>
                     <View style={styles.form_options_container}>

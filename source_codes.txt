@@ -1,0 +1,11 @@
+"plugins": [
+    [
+        "@rnmapbox/maps",
+        {
+            "RNMapboxMapsImpl": "mapbox",
+            "RNMapboxMapsDownloadToken": "sk.eyJ1IjoicnVpbnplIiwiYSI6ImNsbTA4YmtjZTB4YWYza21oNzh5bTkycG0ifQ.2JN6bogkaT84ho7-VuAgFA"
+        }
+    ]
+],
+
+tools:targetApi="28" tools:ignore="GoogleAppIndexingWarning"

@@ -1,0 +1,67 @@
+"plugins": [
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoicnVpbnplIiwiYSI6ImNsbTA4YmtjZTB4YWYza21oNzh5bTkycG0ifQ.2JN6bogkaT84ho7-VuAgFA"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map.",
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ]
+],
+<Mapbox.MapView
+    style={local_styles.map}
+    logoEnabled={false}
+    compassEnabled={true}
+    pitchEnabled={true}
+    onPress={(feature) => setSelectedLocation(feature)}
+>
+<Mapbox.UserLocation
+    androidRenderMode='gps'
+    renderMode={UserLocationRenderMode.Native}
+    visible={true}
+    requestsAlwaysUse={true}
+    onUpdate={(location) => setUserLocation(location)}
+/>
+{/* <Mapbox.ShapeSource id='mapbox-direction-source' shape={lineStringGeoJSON}>
+    <Mapbox.LineLayer
+        id="mapbox-direction-line"
+        style={{
+            lineColor: '#FF0000',
+            lineWidth: 5,
+        }}
+    />
+</Mapbox.ShapeSource> */}
+{userLocation ?
+    <Mapbox.Camera
+        zoomLevel={15}
+        centerCoordinate={[userLocation.coords.longitude,userLocation.coords.latitude]}
+        animationMode="flyTo"
+        animationDuration={2000}
+    />
+    :
+    null
+}
+{selectedLocation ?
+    <>
+        {/* <Mapbox.Camera
+        zoomLevel={15}
+        centerCoordinate={[JSON.stringify(selectedLocation.coords.longitude), JSON.stringify(selectedLocation.coords.latitude)]}
+        animationMode="flyTo"
+        animationDuration={2000}
+        /> */}
+        <Mapbox.PointAnnotation
+        id="selectedLocation"
+        coordinate={[JSON.stringify(selectedLocation.coords.longitude), JSON.stringify(selectedLocation.coords.latitude)]}
+        title="Selected Location"
+        />
+    </>
+    :
+    null
+}
+</Mapbox.MapView>
